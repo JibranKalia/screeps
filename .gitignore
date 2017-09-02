@@ -1,4 +1,7 @@
 .screeps.json
+dist
+
+
 # Logs
 logs
 *.log
@@ -58,3 +61,13 @@ typings/
 # dotenv environment variables file
 .env
 
+# OS generated files #
+###################
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
