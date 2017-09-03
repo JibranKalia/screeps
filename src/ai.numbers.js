@@ -25,17 +25,14 @@ module.exports.create = function() {
 	else if (numberOfHarvesters < minimumNumberOfHarvesters) {
 		name = Game.spawns.Spawn1.createCustomCreep(energy, 'harvester');
 	}
-	else if (numberOfBuilders < minimumNumberOfBuilders) {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'repairer');
-	}
 	else if (numberOfUpgraders < minimumNumberOfUpgraders) {
 		name = Game.spawns.Spawn1.createCustomCreep(energy, 'upgrader');
 	}
-	else if (numberOfRepairers < minimumNumberOfRepairers) {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'healer');
+	else if (numberOfBuilders < minimumNumberOfBuilders){
+		name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
 	}
 	else {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
+		name = Game.spawns.Spawn1.createCustomCreep(energy, 'repairer');
 	}
 
 	if (!(name < 0)) {
