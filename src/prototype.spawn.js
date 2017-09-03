@@ -2,11 +2,11 @@ module.exports = function() {
     // create a new function for StructureSpawn
     StructureSpawn.prototype.createCustomCreep =
         function(energy, roleName) {
-            let uuid = Memory.uuid;
+            var uuid = Memory.uuid;
             var name = this.room.name + "-" + roleName + uuid;
             // create a balanced body as big as possible with the given energy
             var numberOfParts = Math.floor(energy / 200);
-            var body = [];
+            var body = [WORK, CARRY, MOVE];
             for (let i = 0; i < numberOfParts; i++) {
                 body.push(WORK);
             }
@@ -16,12 +16,13 @@ module.exports = function() {
             for (let i = 0; i < numberOfParts; i++) {
                 body.push(MOVE);
             }
+            var body2 = [WORK, CARRY, MOVE];
             // create creep with the created body and the given role
-            if(this.canCreateCreep(body, name) == OK) {
-                let creep = this.createCreep(body, name, { role: roleName, room: this.room.name});
+            if(this.canCreateCreep(body2, name) == OK) {
+                let creep = this.createCreep(body2, name, { role: roleName, room: this.room.name, working: false});
                 console.log(name + " created");
+                Memory.uuid = uuid + 1;
                 return creep;
-                Memory.uuid = Memory.uuid + 1;
             }
         };
 };
