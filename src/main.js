@@ -6,6 +6,9 @@ var roleRepairer = require('role.repairer');
 var ai = require('ai.numbers')
 
 module.exports.loop = function () {
+    if (!Memory.uuid || Memory.uuid > 10000) {
+        Memory.uuid = 0;
+    }
     //Memory Cleanup
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
