@@ -6,7 +6,7 @@ var roleRepairer = require('role.repairer');
 var ai = require('ai.numbers')
 
 module.exports.loop = function () {
-    if (!Memory.uuid || Memory.uuid > 10000) {
+    if (!Memory.uuid || Memory.uuid > 100) {
         Memory.uuid = 0;
     }
     //Memory Cleanup
@@ -17,7 +17,10 @@ module.exports.loop = function () {
         }
     }
 
-	ai.create();
+    ai.harvesters();
+    ai.upgraders();
+    ai.builders();
+    ai.repairers();
 
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
@@ -30,7 +33,7 @@ module.exports.loop = function () {
 		if(creep.memory.role == 'builder') {
 			roleBuilder.run(creep);
 		}
-		if(creep.memory.role == ''){
+		if(creep.memory.role == 'repairer'){
 			roleRepairer.run(creep);
 		}
 	}

@@ -1,42 +1,37 @@
-
 require('prototype.spawn')();
 
-module.exports.create = function() {
-	var minimumNumberOfHarvesters = 2;
-	var minimumNumberOfBuilders = 2;
-	var minimumNumberOfUpgraders = 2;
-	var minimumNumberOfRepairer = 0;
+module.exports.harvesters = function(){
+	let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
+    let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 
-	// count the number of creeps alive for each role
-	// _.sum will count the number of properties in Game.creeps filtered by the
-	//  arrow function, which checks for the creep being a harvester
-	var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
-	var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
-	var numberOfBuilders = _.sum(Game.creeps, (c) => c.memory.role == 'builder');
-	var numberOfRepairer = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
+    if(harvesters.length < 4) {
+		Game.spawns.Spawn1.createCustomCreep(energy, 'harvester');
+    }
+}
 
-	var energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
-	var name = undefined;
+module.exports.upgraders = function(){
+	let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 
-	if (numberOfHarvesters == 0) {
-		name = Game.spawns.Spawn1.createCustomCreep(
-			Game.spawns.Spawn1.room.energyAvailable, 'harvester');
-	}
-	else if (numberOfHarvesters < minimumNumberOfHarvesters) {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'harvester');
-	}
-	else if (numberOfUpgraders < minimumNumberOfUpgraders) {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'upgrader');
-	}
-	else if (numberOfBuilders < minimumNumberOfBuilders){
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
-	}
-	else {
-		name = Game.spawns.Spawn1.createCustomCreep(energy, 'repairer');
-	}
+    if(upgraders.length < 2){
+		Game.spawns.Spawn1.createCustomCreep(energy, 'upgrader');
+    }
+}
 
-	if (!(name < 0)) {
-		console.log("Spawned new creep: " + name);
-		Memory.uuid = Memory.uuid + 1;
-	}
-};
+module.exports.builders = function(){
+	let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
+    let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+
+    if(builders.length < 2){
+		Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
+    }
+}
+
+module.exports.repairers = function(){
+	let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
+    let healers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
+
+    if(healers.length < 1){
+		Game.spawns.Spawn1.createCustomCreep(energy, 'repairer');
+    }
+}
