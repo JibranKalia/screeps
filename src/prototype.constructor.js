@@ -14,6 +14,7 @@ module.exports = {
         for(var i in sources) {
             this.buildRoads(Game.spawns.Spawn1.pos, sources[i].pos);
         }
+        Memory.buildRoadToAllSources = true;
     },
 
     buildRoadToController: function()
@@ -23,6 +24,7 @@ module.exports = {
         if (source){
             this.buildRoads(controller.pos, source.pos);
         }
+        Memory.buildRoadToController = true;
     },
 
     buildRoadAroundSpawn: function()
@@ -36,6 +38,7 @@ module.exports = {
                 var result = Game.spawns.Spawn1.room.createConstructionSite(spawn.pos.x + x, spawn.pos.y + y, STRUCTURE_ROAD);
             }
         }
+        Memory.buildRoadAroundSpawn = true;
     },
     buildRoadAroundController: function()
     {
@@ -48,6 +51,7 @@ module.exports = {
                 var result = Game.spawns.Spawn1.room.createConstructionSite(controller.pos.x + x, controller.pos.y + y, STRUCTURE_ROAD);
             }
         }
+        Memory.buildRoadAroundController = true;
     },
 
     buildRoadAroundSource: function()
@@ -63,6 +67,7 @@ module.exports = {
                 }
             }
         }
+        Memory.buildRoadAroundSource = true;
     },
 
     buildExtensions: function()

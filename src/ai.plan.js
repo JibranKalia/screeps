@@ -5,11 +5,21 @@ module.exports = {
     {
         if (Game.gcl.level == 1)
         {
-            construct.buildRoadToAllSources();
-            construct.buildRoadToController();
-            construct.buildRoadAroundSource();
-            construct.buildRoadAroundController();
-            construct.buildRoadAroundSpawn();
+            if (Memory.buildRoadToAllSources == false){
+                construct.buildRoadToAllSources();
+            }
+            if (Memory.buildRoadToController == false){
+                Memory.buildRoadToController = false;
+            }
+            if (Memory.buildRoadAroundSource == false){
+                construct.buildRoadAroundSource();
+            }
+            if (Memory.buildRoadAroundController == false){
+                construct.buildRoadAroundController();
+            }
+            if (Memory.buildRoadAroundSpawn == false){
+                construct.buildRoadAroundSpawn();
+            }
         }
         if (Game.gcl.level >= 2){
             construct.buildExtensions();
