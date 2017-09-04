@@ -16,7 +16,7 @@ module.exports = function() {
             for (let i = 0; i < numberOfParts; i++) {
                 body.push(MOVE);
             }
-            var body2 = [WORK, WORK, CARRY, MOVE];
+            var body2 = [WORK, CARRY, MOVE];
             var finalbody =(Game.gcl.level >= 3) ? body : body2;
 
             // create creep with the created body and the given role

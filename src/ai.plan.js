@@ -7,6 +7,8 @@ module.exports = {
         {
             construct.buildRoadToAllSources();
             construct.buildRoadToController();
+            construct.buildRoadAroundSource();
+            construct.buildRoadAroundController();
         }
         if (Game.gcl.level == 2){
             construct.buildExtensions();
