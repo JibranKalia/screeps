@@ -44,10 +44,12 @@ module.exports.spawn = function(){
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
     }
     // if not enough wallRepairers
+    /**
     else if (numberOfWallRepairers < minimumNumberOfWallRepairers) {
         // try to spawn one
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'wallRepairer');
     }
+    **/
     else {
         // else try to spawn a builder
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');

@@ -16,10 +16,12 @@ module.exports = function() {
             for (let i = 0; i < numberOfParts; i++) {
                 body.push(MOVE);
             }
-            var body2 = [WORK, CARRY, MOVE];
+            var body2 = [WORK, WORK, CARRY, MOVE];
+            var finalbody =(Game.gcl.level >= 3) ? body : body2;
+
             // create creep with the created body and the given role
-            if(this.canCreateCreep(body2, name) == OK) {
-                let creep = this.createCreep(body2, name, { role: roleName, room: this.room.name, working: false});
+            if(this.canCreateCreep(finalbody, name) == OK) {
+                let creep = this.createCreep(finalbody, name, { role: roleName, room: this.room.name, working: false});
                 console.log(name + " created");
                 Memory.uuid = uuid + 1;
                 return creep;

@@ -9,5 +9,4 @@ module.exports.loop = function () {
     aiPlan.plan();
     aiSpawn.spawn();
     aiRun.run();
-
 };
