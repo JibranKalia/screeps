@@ -10,19 +10,19 @@ module.exports = {
             // get the creep object
             var creep = Game.creeps[name];
             // if creep is harvester, call harvester script
-            if (creep.memory.role == 'harvester') {
+            if (creep.memory.role === 'harvester') {
                 roleHarvester.run(creep);
             }
             // if creep is upgrader, call upgrader script
-            else if (creep.memory.role == 'upgrader') {
+            else if (creep.memory.role === 'upgrader') {
                 roleUpgrader.run(creep);
             }
             // if creep is builder, call builder script
-            else if (creep.memory.role == 'builder') {
+            else if (creep.memory.role === 'builder') {
                 roleBuilder.run(creep);
             }
             // if creep is repairer, call repairer script
-            else if (creep.memory.role == 'repairer') {
+            else if (creep.memory.role === 'repairer') {
                 roleRepairer.run(creep);
             }
             else {

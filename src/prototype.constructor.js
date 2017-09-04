@@ -25,6 +25,18 @@ module.exports = {
         }
     },
 
+    buildRoadAroundSpawn: function()
+    {
+        let spawn = Game.spawns.Spawn1;
+        let x;
+        let y;
+
+        for (x = -2; x <= 2; x++){
+            for (y = -2; y <= 2; y++){
+                var result = Game.spawns.Spawn1.room.createConstructionSite(spawn.pos.x + x, spawn.pos.y + y, STRUCTURE_ROAD);
+            }
+        }
+    },
     buildRoadAroundController: function()
     {
         let controller = Game.spawns.Spawn1.room.controller;
@@ -56,15 +68,14 @@ module.exports = {
     buildExtensions: function()
     {
         var controller = Game.spawns.Spawn1.room.controller;
-        var count;
-        if (Game.gcl.level == 1){
-            count = 5
-        }
-        for (let i = 0; i < count; i++)
-        {
-            var result = Game.spawns.Spawn1.room.createConstructionSite(controller.pos.x + i + 1, controller.pos.y + i + 1, STRUCTURE_EXTENSION);
-            console.log(result);
-
+        for (x = -8; x <= 8; x += 2){
+            for (y = -8; y <= 8; y += 2){
+                var result = Game.spawns.Spawn1.room.createConstructionSite(controller.pos.x + x, controller.pos.y + y, STRUCTURE_EXTENSION);
+                if (result == ERR_RCL_NOT_ENOUGH){
+                    return result;
+                }
+                console.log(result);
+            }
         }
     },
 }

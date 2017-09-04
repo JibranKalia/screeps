@@ -37,7 +37,7 @@ module.exports = {
             // if we can't fine one
             else {
                 // look for construction sites
-                roleBuilder.run(creep);
+                creep.memory.role = 'builder';
             }
         }
         // if creep is supposed to harvest energy from source

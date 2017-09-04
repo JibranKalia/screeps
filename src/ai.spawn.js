@@ -10,7 +10,6 @@ module.exports.spawn = function(){
     var minimumNumberOfUpgraders = 1;
     var minimumNumberOfBuilders = 1;
     var minimumNumberOfRepairers = 1;
-    var minimumNumberOfWallRepairers = 1;
 
     // count the number of creeps alive for each role
     // _.sum will count the number of properties in Game.creeps filtered by the
@@ -19,7 +18,6 @@ module.exports.spawn = function(){
     var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
     var numberOfBuilders = _.sum(Game.creeps, (c) => c.memory.role == 'builder');
     var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
-    var numberOfWallRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'wallRepairer');
 
     var energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
     var name = undefined;
@@ -43,15 +41,8 @@ module.exports.spawn = function(){
         // try to spawn one
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
     }
-    // if not enough wallRepairers
-    /**
-    else if (numberOfWallRepairers < minimumNumberOfWallRepairers) {
-        // try to spawn one
-        name = Game.spawns.Spawn1.createCustomCreep(energy, 'wallRepairer');
-    }
-    **/
     else {
         // else try to spawn a builder
-        name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
+        name = Game.spawns.Spawn1.createCustomCreep(energy, 'upgrader');
     }
 }

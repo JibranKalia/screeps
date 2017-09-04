@@ -9,8 +9,9 @@ module.exports = {
             construct.buildRoadToController();
             construct.buildRoadAroundSource();
             construct.buildRoadAroundController();
+            construct.buildRoadAroundSpawn();
         }
-        if (Game.gcl.level == 2){
+        if (Game.gcl.level >= 2){
             construct.buildExtensions();
         }
 
