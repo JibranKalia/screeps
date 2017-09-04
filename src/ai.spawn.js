@@ -6,9 +6,9 @@ var roleRepairer = require('role.repairer');
 
 module.exports.spawn = function(){
     // setup some minimum numbers for different roles
-    var minimumNumberOfHarvesters = 5;
+    var minimumNumberOfHarvesters = 6;
     var minimumNumberOfUpgraders = 2;
-    var minimumNumberOfBuilders = 3;
+    var minimumNumberOfBuilders = 2;
     var minimumNumberOfRepairers = 2;
 
     // count the number of creeps alive for each role
@@ -20,14 +20,18 @@ module.exports.spawn = function(){
     var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
 
     var energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
-    var sourceID = Game.spawns.Spawn1.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+    var sources = Game.spawns.Spawn1.room.find(FIND_SOURCES_ACTIVE);
+    var sourceID = (numberOfHarvesters % 2) ? sources[0].id : sources[1].id;
     var name = undefined;
 
     // if not enough harvesters
     if (numberOfHarvesters < minimumNumberOfHarvesters) {
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'harvester', sourceID);
     }
-    // if not enough upgraders
+    else if (numberOfBuilders < minimumNumberOfBuilders) {
+        // try to spawn one
+        name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder', sourceID);
+    }
     else if (numberOfUpgraders < minimumNumberOfUpgraders) {
         // try to spawn one
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'upgrader', sourceID);
@@ -38,12 +42,8 @@ module.exports.spawn = function(){
         name = Game.spawns.Spawn1.createCustomCreep(energy, 'repairer', sourceID);
     }
     // if not enough builders
-    else if (numberOfBuilders < minimumNumberOfBuilders) {
-        // try to spawn one
-        name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder', sourceID);
-    }
     else {
         // else try to spawn a builder
-        name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder', sourceID);
+        name = Game.spawns.Spawn1.createCustomCreep(energy, 'harvester', sourceID);
     }
 }

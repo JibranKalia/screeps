@@ -22,10 +22,10 @@ module.exports = function() {
 
             var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
 
-            if (numberOfHarvesters > 2 && roleName == 'harvester'){
+            if (numberOfHarvesters > 1 && roleName == 'harvester'){
                 finalbody = [WORK, WORK, CARRY, MOVE];
             }
-            if (numberOfHarvesters > 3 && energy >= 400 && roleName == 'harvester'){
+            if (numberOfHarvesters > 4 && energy >= 400 && roleName == 'harvester'){
                 finalbody = [WORK, WORK, WORK, CARRY, MOVE];
             }
             // create creep with the created body and the given role
