@@ -16,11 +16,11 @@ module.exports = function() {
             for (let i = 0; i < numberOfParts; i++) {
                 body.push(MOVE);
             }
-            var body2 = [WORK, CARRY, MOVE];
-
-            var finalbody = (Game.gcl.level >= 3) ? body : body2;
+            var body2 = [WORK, WORK, CARRY, MOVE];
 
             var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
+
+			var finalbody;
 
             if (numberOfHarvesters > 1 && roleName == 'harvester'){
                 finalbody = [WORK, WORK, CARRY, MOVE];
@@ -28,6 +28,8 @@ module.exports = function() {
             if (numberOfHarvesters > 4 && energy >= 400 && roleName == 'harvester'){
                 finalbody = [WORK, WORK, WORK, CARRY, MOVE];
             }
+
+            finalbody = (Game.gcl.level >= 3) ? body : body2;
             // create creep with the created body and the given role
             if(this.canCreateCreep(finalbody, name, p_sourceId) == OK) {
                 let creep = this.createCreep(finalbody, name, { role: roleName, room: this.room.name, working: false, sourceId: p_sourceId});
