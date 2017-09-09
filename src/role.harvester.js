@@ -1,50 +1,62 @@
-module.exports = {
-    // a function to run the logic for this role
-    run: function(creep) {
-        // if creep is bringing energy to a structure but has no energy left
-        if (creep.memory.working == true && creep.carry.energy == 0) {
-            // switch state
-            creep.memory.working = false;
-        }
-        // if creep is harvesting energy but is full
-        else if (creep.memory.working == false && creep.carry.energy == creep.carryCapacity) {
-            // switch state
-            creep.memory.working = true;
-        }
+var roleHarvester = {
 
-        // if creep is supposed to transfer energy to a structure
-        if (creep.memory.working == true) {
-            // find closest spawn, extension or tower which is not full
-            var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                // the second argument for findClosestByPath is an object which takes
-                // a property called filter which can be a function
-                // we use the arrow operator to define it
-                filter: (s) => (s.structureType == STRUCTURE_CONTAINER
-                             || s.structureType == STRUCTURE_EXTENSION
-                             || s.structureType == STRUCTURE_SPAWN
-                             || s.structureType == STRUCTURE_TOWER)
-                             && s.energy < s.energyCapacity
+    /** @param {Creep} creep **/
+    run: function(creep) {
+        if(creep.memory.dropoff && creep.carry.energy == 0) {
+            creep.memory.dropoff = false;
+            creep.say('harvesting');
+	    }
+	    if(!creep.memory.dropoff && creep.carry.energy == creep.carryCapacity) {
+	        creep.memory.dropoff = true;
+	        creep.say('Drop Off');
+	    }
+
+	    if(!creep.memory.dropoff) {
+            var sources = creep.room.find(FIND_SOURCES)
+
+            if(!creep.memory.source){
+                for(source in sources){
+                    var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester') && (creep.memory.source == source));
+                    if(harvesters.length != 2){
+                        creep.memory.source = source
+                    }
+                }
+            }
+
+            if(creep.harvest(sources[creep.memory.source]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[creep.memory.source]);
+            }
+        }
+        else {
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return ((structure.structureType == STRUCTURE_EXTENSION ||
+                                structure.structureType == STRUCTURE_SPAWN ||
+                                structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity)
+                                ||
+                                (structure.structureType == STRUCTURE_CONTAINER && _.sum(structure.store) < structure.storeCapacity);
+                    }
             });
 
-            // if we found one
-            if (structure != undefined) {
-                // try to transfer energy, if it is not in range
-                if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    // move towards it
-                    creep.moveTo(structure);
+            if(targets.length > 0) {
+                targets.sort(function(a,b){
+                   if(a.structureType == STRUCTURE_SPAWN){
+                       return -1;
+                   }else{
+                       if(a.structureType == STRUCTURE_CONTAINER){
+                           return 1;
+                       }else{
+                           return 0;
+                       }
+                   }
+                });
+
+                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0]);
                 }
             }
         }
-        // if creep is supposed to harvest energy from source
-        else {
-            // find closest source
-            var source = Game.getObjectById(creep.memory.sourceId);
-            if (source == null){
-                source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-            }
-            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
-        }
-    }
+	}
 };
+
+module.exports = roleHarvester;

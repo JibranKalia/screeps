@@ -20,7 +20,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-screeps')
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-copy')
-  grunt.loadNpmTasks('grunt-file-append')
   grunt.loadNpmTasks("grunt-jsbeautifier")
   grunt.loadNpmTasks("grunt-rsync")
 
@@ -78,20 +77,6 @@ module.exports = function (grunt) {
         },
     },
 
-
-    // Add version variable using current timestamp.
-    file_append: {
-      versioning: {
-        files: [
-          {
-            append: "\nglobal.SCRIPT_VERSION = "+ currentdate.getTime() + "\n",
-            input: 'dist/version.js',
-          }
-        ]
-      }
-    },
-
-
     // Remove all files from the dist folder.
     clean: {
       'dist': ['dist']
@@ -118,8 +103,7 @@ module.exports = function (grunt) {
   })
 
   // Combine the above into a default task
-  grunt.registerTask('default',  ['clean', 'copy:screeps',  'file_append:versioning', 'screeps']);
-  grunt.registerTask('private',  ['clean', 'copy:screeps',  'file_append:versioning', 'rsync:private']);
+  grunt.registerTask('default',  ['clean', 'copy:screeps', 'rsync:private']);
   grunt.registerTask('test',     ['jsbeautifier:verify']);
   grunt.registerTask('pretty',   ['jsbeautifier:modify']);
 }

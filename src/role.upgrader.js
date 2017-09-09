@@ -1,39 +1,39 @@
-module.exports = {
-    // a function to run the logic for this role
+var roleUpgrader = {
+
+    /** @param {Creep} creep **/
     run: function(creep) {
-        // if creep is bringing energy to the controller but has no energy left
-        if (creep.memory.working == true && creep.carry.energy == 0) {
-            // switch state
-            creep.memory.working = false;
-        }
-        // if creep is harvesting energy but is full
-        else if (creep.memory.working == false && creep.carry.energy == creep.carryCapacity) {
-            // switch state
-            creep.memory.working = true;
-        }
 
-        // if creep is supposed to transfer energy to the controller
-        if (creep.memory.working == true) {
-            // instead of upgraderController we could also use:
-            // if (creep.transfer(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        if(creep.memory.upgrading && creep.carry.energy == 0) {
+            creep.memory.upgrading = false;
+            creep.say('harvesting');
+	    }
+	    if(!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
+	        creep.memory.upgrading = true;
+	        creep.say('upgrading');
+	    }
 
-            // try to upgrade the controller
-            if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                // if not in range, move towards the controller
+	    if(creep.memory.upgrading) {
+            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
         }
-        // if creep is supposed to harvest energy from source
         else {
-            var source = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: (s) => (s.structureType == STRUCTURE_EXTENSION
-                             || s.structureType == STRUCTURE_CONTAINER)
-                             && s.energy > 1
-                         });
-            if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                // move towards the source
-                creep.moveTo(source);
+            spawns = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
+                }
+            });
+
+            if(spawns.length){
+                target = creep.pos.findClosestByRange(spawns)
+                if(!(creep.pos.isNearTo(target))){
+                    creep.moveTo(target);
+                }else{
+                    creep.withdraw(target, RESOURCE_ENERGY, (creep.carryCapacity - _.sum(creep.carry)));
+                }
             }
         }
-    }
+	}
 };
+
+module.exports = roleUpgrader;

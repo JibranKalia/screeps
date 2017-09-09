@@ -1,12 +1,31 @@
-// import modules
-var aiStart = require('ai.start');
-var aiSpawn = require('ai.spawn');
-var aiRun = require('ai.run');
-var aiPlan = require('ai.plan');
+var roles = {
+    builder: require('role.builder'),
+    harvester: require('role.harvester'),
+    upgrader: require('role.upgrader'),
+    healer: require('role.healer')
+}
+
+var ai = {
+    numbers: require('ai.numbers')
+}
 
 module.exports.loop = function () {
-    aiStart.init();
-    aiPlan.plan();
-    aiSpawn.spawn();
-    aiRun.run();
-};
+    for(var name in Memory.creeps) {
+        if(!Game.creeps[name]) {
+            delete Memory.creeps[name];
+            console.log('Clearing non-existing creep memory:', name);
+        }
+    }
+
+    ai.numbers.harvesters();
+    ai.numbers.upgraders();
+    ai.numbers.builders();
+    ai.numbers.healers();
+
+
+    for(var name in Game.creeps){
+        var creep = Game.creeps[name];
+
+        roles[creep.memory.role].run(creep);
+    }
+}
